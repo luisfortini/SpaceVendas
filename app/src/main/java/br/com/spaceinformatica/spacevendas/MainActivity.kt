@@ -33,10 +33,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun login{
-
-
-    }
 }
 
 
