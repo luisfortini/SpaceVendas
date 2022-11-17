@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SpaceVendas</string>
+    <string name="login">Entrar</string>
+    <string name="label_user">Usuário</string>
+    <string name="label_pass">Senha</string>
+    <string name="label_host">Host</string>
+    <string name="label_port">Porta</string>
+    <string name="save">Salvar</string>
+    <string name="http">Conexão Segura (Https)</string>
+    <string name="settings">Configuração</string>
+    <string name="message_invalid_config">Preencha o Host e a Porta</string>
+    <string name="data_sucess_massege">Dados salvos</string>
+</resources>
