@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
-import br.com.spaceinformatica.spacevendas.Model.Config
+import br.com.spaceinformatica.spacevendas.model.Config
 
 class ConfigActivity : AppCompatActivity() {
 
@@ -54,9 +54,9 @@ class ConfigActivity : AppCompatActivity() {
 
             val app = application as App
             val dao = app.db.configDao()
-            val response: List<Config> = dao.getConfig()
+            val respons: List<Config> = dao.getConfig()
 
-            if (response.size > 0) {
+            if (respons.size > 0) {
                 dao.updateConfig((Config(1, host, port, https)))
             } else {
                 dao.insertConfig(Config(1, host, port, https))
@@ -76,11 +76,11 @@ class ConfigActivity : AppCompatActivity() {
 
             val app = application as App
             val dao = app.db.configDao()
-            val response: List<Config> = dao.getConfig()
+            val respons: List<Config> = dao.getConfig()
 
 
-                if (response.size > 0) {
-                    setValuesConfig(response.get(0))
+                if (respons.size > 0) {
+                    setValuesConfig(respons.get(0))
                 }
 
         }.start()

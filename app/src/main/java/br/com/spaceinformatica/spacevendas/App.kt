@@ -1,7 +1,7 @@
 package br.com.spaceinformatica.spacevendas
 
 import android.app.Application
-import br.com.spaceinformatica.spacevendas.Model.AppDatabase
+import br.com.spaceinformatica.spacevendas.model.AppDatabase
 
 class App : Application() {
 

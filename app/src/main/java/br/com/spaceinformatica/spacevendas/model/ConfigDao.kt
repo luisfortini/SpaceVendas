@@ -1,4 +1,4 @@
-package br.com.spaceinformatica.spacevendas.Model
+package br.com.spaceinformatica.spacevendas.model
 
 import androidx.room.Dao
 import androidx.room.Insert

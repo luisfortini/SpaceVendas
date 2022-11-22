@@ -1,4 +1,4 @@
-package br.com.spaceinformatica.spacevendas.Model
+package br.com.spaceinformatica.spacevendas.model
 
 import android.content.Context
 import androidx.room.Database
