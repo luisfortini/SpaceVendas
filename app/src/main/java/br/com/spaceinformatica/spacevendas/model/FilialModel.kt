@@ -1,6 +1,11 @@
 package br.com.spaceinformatica.spacevendas.model
 
-class FilialModel(
+data class FilialModel(
     val filCodigo: Int,
     val filFantasia: String
-)
+){
+
+    fun getFantasia(): String? {
+        return filFantasia
+    }
+}

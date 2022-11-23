@@ -76,11 +76,11 @@ class ConfigActivity : AppCompatActivity() {
 
             val app = application as App
             val dao = app.db.configDao()
-            val respons: List<Config> = dao.getConfig()
+            val response: List<Config> = dao.getConfig()
 
 
-                if (respons.size > 0) {
-                    setValuesConfig(respons.get(0))
+                if (response.size > 0) {
+                    setValuesConfig(response.get(0))
                 }
 
         }.start()
