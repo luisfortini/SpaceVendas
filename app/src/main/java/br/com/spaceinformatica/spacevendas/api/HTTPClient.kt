@@ -1,16 +1,13 @@
 package br.com.spaceinformatica.spacevendas.api
 
-import android.telephony.mbms.StreamingServiceInfo
-import br.com.spaceinformatica.spacevendas.App
-import br.com.spaceinformatica.spacevendas.model.Config
+import br.com.spaceinformatica.spacevendas.utils.getUrlBase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object HTTPClient {
 
-    private const val URL_BASE = "http://192.168.0.13:2020/"
+object HTTPClient {
 
     private fun httpCliente(): OkHttpClient {
 
@@ -24,7 +21,7 @@ object HTTPClient {
 
     fun retrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(URL_BASE)
+            .baseUrl(getUrlBase())
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpCliente())
             .build()

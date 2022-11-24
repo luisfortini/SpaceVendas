@@ -11,10 +11,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
-import br.com.spaceinformatica.spacevendas.model.FilialAdapter
 import br.com.spaceinformatica.spacevendas.model.FilialModel
 import br.com.spaceinformatica.spacevendas.model.LoginBody
+import br.com.spaceinformatica.spacevendas.utils.TOKEN
+import br.com.spaceinformatica.spacevendas.utils.createUrlBase
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
@@ -47,12 +49,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        Thread{
+            createUrlBase(this)
+        }.start()
+
+
         progressBar = findViewById(R.id.progress_bar)
         progressBar.visibility = View.GONE
 
         inputUser = findViewById(R.id.login_user)
         inputUser.setSelectAllOnFocus(true)
-        inputUser.setOnFocusChangeListener { v, hasFocus ->
+        inputUser.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 getFiliais(inputUser.text.toString())
             }
@@ -74,34 +82,45 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
         HTTPClient.retrofit()
             .create(EndPoint::class.java)
-            .getFiliais(inputUser.text.toString())
+            .getFiliais(user)
             .enqueue(object : Callback<ResponseBody> {
 
                 override fun onResponse(
                     call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
+                    response: Response<ResponseBody>,
                 ) {
                     progressBar.visibility = View.GONE
                     if (response.isSuccessful) {
 
                         val data = response.body()?.string()
                         if (JSONObject(data!!).getBoolean("resposta")) {
-                            val filialObject = JSONObject(data!!).getJSONArray("dados")
+                            val filialObject = JSONObject(data).getJSONArray("dados")
 
-                            val filialList = mutableListOf<FilialModel>()
-                            for (i in 0 until filialObject.length()) {
-                                val filial = filialObject.getJSONObject(i)
-                                val filialCodigo = filial.getInt("Filial")
-                                val filialFantasia = filial.getString("Fantasia")
-                                val filialModel = FilialModel(filialCodigo, filialFantasia)
-                                filialList.add(filialModel)
-                            }
+                            val type = object : TypeToken<List<FilialModel>>() {}.type
+                            val filialList =
+                                Gson().fromJson<List<FilialModel>>(filialObject.toString(), type)
                             spinnerFilial = findViewById(R.id.spinner_filial)
-                            spinnerFilial.adapter = FilialAdapter(this@MainActivity, filialList)
+                            val adapterFilial =
+                                ArrayAdapter(this@MainActivity,
+                                    R.layout.support_simple_spinner_dropdown_item,
+                                    filialList)
+                            spinnerFilial.adapter = adapterFilial
+
+
+//                            val filialList = mutableListOf<FilialModel>()
+//                            for (i in 0 until filialObject.length()) {
+//                                val filial = filialObject.getJSONObject(i)
+//                                val filialCodigo = filial.getInt("Filial")
+//                                val filialFantasia = filial.getString("Fantasia")
+//                                val filialModel = FilialModel(filialCodigo, filialFantasia)
+//                                filialList.add(filialModel)
+//                            }
+//
+//                            spinnerFilial.adapter = FilialAdapter(this@MainActivity, filialList)
 
 
                         } else {
-                            val resposta = JSONObject(data!!).getString("dados")
+                            val resposta = JSONObject(data).getString("dados")
                             progressBar.visibility = View.GONE
                             Toast.makeText(this@MainActivity, resposta, Toast.LENGTH_LONG).show()
                         }
@@ -132,9 +151,12 @@ class MainActivity : AppCompatActivity() {
         inputPass = findViewById(R.id.login_pass)
         val user = inputUser.text.toString()
         val pass = inputPass.text.toString()
-        val filialId = spinnerFilial.selectedItemId.toInt()
+        val filialModel: FilialModel =
+            spinnerFilial.adapter.getItem(spinnerFilial.selectedItemPosition) as FilialModel
+//        val filialId = spinnerFilial.selectedItemId.toInt()
 
-        val loginBody = LoginBody(user, pass, filialId)
+
+        val loginBody = LoginBody(user, pass, filialModel.filCodigo)
 
         val bodyRequest = Gson().toJson(loginBody).toRequestBody("application/json".toMediaType())
 
@@ -144,17 +166,17 @@ class MainActivity : AppCompatActivity() {
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
+                    response: Response<ResponseBody>,
                 ) {
                     progressBar.visibility = View.GONE
                     if (response.isSuccessful) {
                         val data = JSONObject(response.body()?.string()!!)
-                        val token = data.getString("token")
                         val usuario = data.getString("login")
                         val filial = data.getInt("filialCodigo")
+                        TOKEN = data.getString("token")
 
                         val intent = Intent(this@MainActivity, ClienteActivity::class.java)
-                        intent.putExtra("usuario",usuario)
+                        intent.putExtra("usuario", usuario)
                         intent.putExtra("filial", filial)
                         startActivity(intent)
 

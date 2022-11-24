@@ -17,9 +17,9 @@ class ClienteAdapter(
     :RecyclerView.Adapter<ClienteAdapter.ClienteViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClienteViewHolder {
-        val clienteLayoutItem = LayoutInflater.from(context).inflate(R.layout.cliente_item, parent, false)
-        val holder = ClienteViewHolder(clienteLayoutItem)
-        return holder
+        val clienteLayoutItem =
+            LayoutInflater.from(context).inflate(R.layout.cliente_item, parent, false)
+        return ClienteViewHolder(clienteLayoutItem)
     }
 
     override fun onBindViewHolder(holder: ClienteViewHolder, position: Int) {

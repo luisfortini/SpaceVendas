@@ -6,10 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
     android:background="@drawable/card_item"
     tools:showIn="@layout/activity_cliente"
-    android:padding="16dp"
+    android:padding="8dp"
     android:elevation="3dp"
     android:id="@+id/card_cliente"
     >

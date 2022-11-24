@@ -7,6 +7,8 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import br.com.spaceinformatica.spacevendas.model.Config
+import br.com.spaceinformatica.spacevendas.utils.createUrlBase
+import br.com.spaceinformatica.spacevendas.utils.getConfig
 
 class ConfigActivity : AppCompatActivity() {
 
@@ -42,25 +44,25 @@ class ConfigActivity : AppCompatActivity() {
 
     }
 
-    fun setValuesConfig(config: Config) {
+    private fun setValuesConfig(config: Config) {
         editHost.setText(config.host)
         editPort.setText(config.porta.toString())
-        checkHttps.setChecked(config.https)
+        checkHttps.isChecked = config.https
     }
 
-    fun saveSetting(host: String, port: Int, https: Boolean) {
+    private fun saveSetting(host: String, port: Int, https: Boolean) {
 
         Thread {
+            val dao = (application as App).db.configDao()
+            val response = getConfig(this)
 
-            val app = application as App
-            val dao = app.db.configDao()
-            val respons: List<Config> = dao.getConfig()
-
-            if (respons.size > 0) {
+            if (response.isNotEmpty()) {
                 dao.updateConfig((Config(1, host, port, https)))
             } else {
                 dao.insertConfig(Config(1, host, port, https))
             }
+
+            createUrlBase(this)
 
             runOnUiThread{
                 Toast.makeText(this, R.string.data_sucess_massege, Toast.LENGTH_SHORT).show()
@@ -70,20 +72,14 @@ class ConfigActivity : AppCompatActivity() {
 
     }
 
-    fun getValuesConfig(){
+    private fun getValuesConfig(){
 
         Thread {
+            val response = getConfig(this)
 
-            val app = application as App
-            val dao = app.db.configDao()
-            val response: List<Config> = dao.getConfig()
-
-
-                if (response.size > 0) {
-                    setValuesConfig(response.get(0))
+                if (response.isNotEmpty()) {
+                    setValuesConfig(response[0])
                 }
-
         }.start()
-
     }
 }
