@@ -14,13 +14,13 @@ interface EndPoint {
     @POST("vendasguardian/autenticacao/entrar")
     fun postLogin(@Body requestBody: RequestBody): Call<ResponseBody>
 
-//    @POST("apivendas/appcliente.rule?sys=AVR")
-//    fun getClientes(@Body requestBody: RequestBody): Call<ResponseBody>
-
     @GET("apivendas/appcliente.rule?sys=AVR")
     fun getClientes(
         @Query("usuario") usuario: String,
         @Query("filial") filial: Int
     ): Call<ResponseBody>
+
+    @GET("apivendas/appproduto.rule?sys=AVR")
+    fun getProdutos(@Query("filial") filia: Int): Call<ResponseBody>
 
 }

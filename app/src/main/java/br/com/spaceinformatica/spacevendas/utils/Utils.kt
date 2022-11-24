@@ -6,6 +6,7 @@ import br.com.spaceinformatica.spacevendas.model.Config
 
 lateinit var URL_BASE: String
 lateinit var TOKEN: String
+lateinit var FILIAL: String
 
 
 fun getConfig(activity: Activity): List<Config> {

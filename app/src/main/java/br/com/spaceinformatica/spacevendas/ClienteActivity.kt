@@ -1,5 +1,6 @@
 package br.com.spaceinformatica.spacevendas
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -92,7 +93,8 @@ class ClienteActivity : AppCompatActivity() {
 
     private fun setAdapter(clienteList: List<ClienteModel>) {
         val clienteAdapter = ClienteAdapter(this, clienteList ){ id ->
-            Toast.makeText(this@ClienteActivity,id.toString(),Toast.LENGTH_SHORT).show()
+            val intent = Intent(this,ProdutoActivity::class.java)
+            startActivity(intent)
         }
 
         val rv = findViewById<RecyclerView>(R.id.rv_clientes)
