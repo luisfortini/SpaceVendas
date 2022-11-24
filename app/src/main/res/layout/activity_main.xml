@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center">
 
     <LinearLayout
@@ -23,7 +23,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="70dp"
             android:src="@drawable/logospace"
             android:elevation="3dp"/>
 
@@ -31,10 +31,7 @@
             style="@style/edit_text"
             android:id="@+id/login_user"
             android:hint="@string/label_user"
-            android:elevation="3dp"
-            android:padding="16dp"
             android:background="@drawable/edit_text"
-            android:layout_marginHorizontal="8dp"
             />
 
         <EditText
@@ -42,17 +39,15 @@
             android:id="@+id/login_pass"
             android:hint="@string/label_pass"
             android:inputType="textPassword"
-            android:elevation="3dp"
-            android:padding="16dp"
             android:background="@drawable/edit_text"
-            android:layout_marginHorizontal="8dp"
             />
 
         <Spinner
             android:id="@+id/spinner_filial"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
             android:elevation="3dp"
             android:padding="16dp"
             android:background="@drawable/edit_text"

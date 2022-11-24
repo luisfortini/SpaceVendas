@@ -4,13 +4,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import br.com.spaceinformatica.spacevendas.R
 import br.com.spaceinformatica.spacevendas.model.ProdutoModel
 
-class ProdutoAdapter(val context: Context, val produtoList: List<ProdutoModel>)
-    : RecyclerView.Adapter<ProdutoAdapter.ProdutoViewHolder>() {
+class ProdutoAdapter(
+    val context: Context,
+    val produtoList: List<ProdutoModel>,
+    val onItemClickListener: (Int) -> Unit,
+) : RecyclerView.Adapter<ProdutoAdapter.ProdutoViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -45,6 +50,11 @@ class ProdutoAdapter(val context: Context, val produtoList: List<ProdutoModel>)
             codBarras.text = produtoModel.codBarras
             val preco = itemView.findViewById<TextView>(R.id.preco)
             preco.text = ("R$ ${produtoModel.precoVenda}")
+            val cardProduto = itemView.findViewById<ConstraintLayout>(R.id.card_produto)
+            cardProduto.setOnClickListener {
+                onItemClickListener(produtoModel.codigoProduto)
+
+            }
         }
     }
 }

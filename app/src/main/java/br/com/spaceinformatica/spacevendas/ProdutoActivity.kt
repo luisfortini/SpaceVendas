@@ -2,7 +2,12 @@ package br.com.spaceinformatica.spacevendas
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.inflate
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +16,7 @@ import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
 import br.com.spaceinformatica.spacevendas.model.ProdutoModel
 import br.com.spaceinformatica.spacevendas.utils.FILIAL
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -20,12 +26,14 @@ import retrofit2.Response
 import retrofit2.create
 
 class ProdutoActivity : AppCompatActivity() {
+
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_produto)
 
+        progressBar = findViewById(R.id.progress_produto)
         getProdutos()
-
     }
 
     private fun getProdutos() {
@@ -38,6 +46,7 @@ class ProdutoActivity : AppCompatActivity() {
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>,
                 ) {
+                    progressBar.visibility = View.GONE
                     if (response.isSuccessful) {
                         val data = JSONObject(response.body()?.string())
                         if (data.getBoolean("resposta")) {
@@ -53,7 +62,7 @@ class ProdutoActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    //  progressBar.visibility = View.GONE
+                    progressBar.visibility = View.GONE
                     Toast.makeText(
                         this@ProdutoActivity,
                         "Falha na conexão! Verifique a internet ou as configurações!",
@@ -65,7 +74,17 @@ class ProdutoActivity : AppCompatActivity() {
     }
 
     private fun setAdapterProduto(produtoList: List<ProdutoModel>) {
-        val produtoAdapter = ProdutoAdapter(this, produtoList)
+        val produtoAdapter = ProdutoAdapter(this, produtoList) { id ->
+            val view: View = layoutInflater.inflate(R.layout.modal_produto, null)
+//            val descModal = view.findViewById<TextView>(R.id.desc_modal_produto)
+//            val inputPreco = view.findViewById<EditText>(R.id.preco)
+//            descModal.text = "taetse"
+//            inputPreco.setText("${produtoList[id].precoVenda}")
+            val dialog = BottomSheetDialog(this)
+            dialog.setContentView(view)
+            dialog.show()
+
+        }
 
         val rv = findViewById<RecyclerView>(R.id.rv_produtos)
         rv.layoutManager = LinearLayoutManager(this)
