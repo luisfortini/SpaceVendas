@@ -1,0 +1,127 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "e40640aebb56a038dfd02a116276ba40",
+    "entities": [
+      {
+        "tableName": "Config",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `host` TEXT NOT NULL, `port` INTEGER NOT NULL, `https` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "host",
+            "columnName": "host",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "porta",
+            "columnName": "port",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "https",
+            "columnName": "https",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ItensPedido",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`numItem` INTEGER NOT NULL, `codigoProduto` INTEGER NOT NULL, `descProduto` TEXT NOT NULL, `unidade` TEXT NOT NULL, `qtdeUnidade` INTEGER NOT NULL, `fatEstoque` REAL NOT NULL, `fatVenda` REAL NOT NULL, `quantidade` REAL NOT NULL DEFAULT 0.0, `precoVenda` REAL NOT NULL, `precoTabela` REAL NOT NULL, PRIMARY KEY(`numItem`))",
+        "fields": [
+          {
+            "fieldPath": "numItem",
+            "columnName": "numItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codigoProduto",
+            "columnName": "codigoProduto",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descProduto",
+            "columnName": "descProduto",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unidade",
+            "columnName": "unidade",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qtdeUnidade",
+            "columnName": "qtdeUnidade",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatEstoque",
+            "columnName": "fatEstoque",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatVenda",
+            "columnName": "fatVenda",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantidade",
+            "columnName": "quantidade",
+            "affinity": "REAL",
+            "notNull": true,
+            "defaultValue": "0.0"
+          },
+          {
+            "fieldPath": "precoVenda",
+            "columnName": "precoVenda",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "precoTabela",
+            "columnName": "precoTabela",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "numItem"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e40640aebb56a038dfd02a116276ba40')"
+    ]
+  }
+}
