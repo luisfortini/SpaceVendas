@@ -1,6 +1,7 @@
 package br.com.spaceinformatica.spacevendas
 
 
+import android.appwidget.AppWidgetProvider
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -8,8 +9,10 @@ import android.widget.AdapterView.*
 import androidx.fragment.app.DialogFragment
 import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
+import br.com.spaceinformatica.spacevendas.model.ItensPedido
 import br.com.spaceinformatica.spacevendas.model.UnidadeProModel
 import br.com.spaceinformatica.spacevendas.utils.FILIAL
+import br.com.spaceinformatica.spacevendas.utils.NUMERO_ITEM
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
@@ -48,11 +51,24 @@ class ProdutoDialog(val produtoCodigo: Int) : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getUniadePro()
+        textDesc = view.findViewById(R.id.desc_modal_produto)
+        textEstoque = view.findViewById(R.id.estoque_modal)
+        inputPreco = view.findViewById(R.id.input_preco_modal)
+        inputPreco.setSelectAllOnFocus(true)
+        inputQtde = view.findViewById(R.id.input_qtde_modal)
+        inputQtde.setSelectAllOnFocus(true)
+
+        buttonSave = view.findViewById(R.id.btn_save_produto)
+        buttonSave.setOnClickListener {
+            addProduto()
+
+        }
+
+        getUnidadePro()
 
     }
 
-    fun getUniadePro() {
+    private fun getUnidadePro() {
         HTTPClient.retrofit()
             .create(EndPoint::class.java)
             .getUnidadePro(FILIAL.toInt(), produtoCodigo)
@@ -64,7 +80,6 @@ class ProdutoDialog(val produtoCodigo: Int) : DialogFragment() {
                     if (response.isSuccessful) {
                         val data = JSONObject(response.body()?.string()!!)
                         if (data.getBoolean("resposta")) {
-
                             setValuesUnidadePro(data)
                         }
                     }
@@ -77,13 +92,6 @@ class ProdutoDialog(val produtoCodigo: Int) : DialogFragment() {
     }
 
     private fun setValuesUnidadePro(data: JSONObject) {
-
-        textDesc = view?.findViewById(R.id.desc_modal_produto)!!
-        textEstoque = view?.findViewById(R.id.estoque_modal)!!
-        inputPreco = view?.findViewById(R.id.input_preco_modal)!!
-        inputPreco.setSelectAllOnFocus(true)
-        inputQtde = view?.findViewById(R.id.input_qtde_modal)!!
-        inputQtde.setSelectAllOnFocus(true)
 
         val unidadeProArray = data.getJSONArray("dados")
         val type = object : TypeToken<List<UnidadeProModel>>() {}.type
@@ -121,6 +129,40 @@ class ProdutoDialog(val produtoCodigo: Int) : DialogFragment() {
 
     }
 
+    private fun addProduto() {
+
+        val unidadeProModel: UnidadeProModel =
+            spinnerUnidade.adapter.getItem(spinnerUnidade.selectedItemPosition) as UnidadeProModel
+        val codigoProduto = unidadeProModel.codigoProduto
+        val descProduto = unidadeProModel.descProduto
+        val unidade = unidadeProModel.unidadePro
+        val qtdeUnidade = unidadeProModel.qtdeUnidade
+        val fatVenda = unidadeProModel.fatorVenda
+        val fatEstoque = unidadeProModel.fatorEstoque
+        val precoTabela = unidadeProModel.precoVenda
+        val quantidade = inputQtde.text.toString().toDouble()
+        val precoVenda = inputPreco.text.toString().toDouble()
+        val numeroItem = NUMERO_ITEM
+
+        val itensPedido = ItensPedido(numeroItem,
+            codigoProduto,
+            descProduto,
+            unidade,
+            qtdeUnidade,
+            fatEstoque,
+            fatVenda,
+            quantidade,
+            precoVenda,
+            precoTabela)
+
+        Thread {
+            val dao = (activity?.application as App).db.itensPedidoDao()
+            dao.insertItens(itensPedido)
+        }.start()
+        NUMERO_ITEM = numeroItem + 1
+        dismiss()
+
+    }
 }
 
 

@@ -107,19 +107,6 @@ class MainActivity : AppCompatActivity() {
                                     filialList)
                             spinnerFilial.adapter = adapterFilial
 
-
-//                            val filialList = mutableListOf<FilialModel>()
-//                            for (i in 0 until filialObject.length()) {
-//                                val filial = filialObject.getJSONObject(i)
-//                                val filialCodigo = filial.getInt("Filial")
-//                                val filialFantasia = filial.getString("Fantasia")
-//                                val filialModel = FilialModel(filialCodigo, filialFantasia)
-//                                filialList.add(filialModel)
-//                            }
-//
-//                            spinnerFilial.adapter = FilialAdapter(this@MainActivity, filialList)
-
-
                         } else {
                             val resposta = JSONObject(data).getString("dados")
                             progressBar.visibility = View.GONE
