@@ -1,14 +1,12 @@
 package br.com.spaceinformatica.spacevendas
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.inflate
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.spaceinformatica.spacevendas.adapter.ProdutoAdapter
@@ -17,6 +15,7 @@ import br.com.spaceinformatica.spacevendas.api.HTTPClient
 import br.com.spaceinformatica.spacevendas.model.ProdutoModel
 import br.com.spaceinformatica.spacevendas.utils.FILIAL
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -27,10 +26,18 @@ import retrofit2.create
 
 class ProdutoActivity : AppCompatActivity() {
 
+    private lateinit var buttonFloat: FloatingActionButton
+
     private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_produto)
+
+        buttonFloat = findViewById(R.id.float_button_produtos)
+        buttonFloat.setOnClickListener {
+            startActivity(Intent(this,DadosPedidoActivity::class.java))
+        }
+
 
         progressBar = findViewById(R.id.progress_produto)
         getProdutos()

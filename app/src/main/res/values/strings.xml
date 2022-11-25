@@ -11,4 +11,10 @@
     <string name="message_invalid_config">Preencha o Host e a Porta</string>
     <string name="data_sucess_massege">Dados salvos</string>
     <string name="search">Pesquisar</string>
+    <string name="nat_oper">Natureza de Operação</string>
+    <string name="observacao">Observação</string>
+    <string name="forma_pagto">Forma de Pagamento</string>
+    <string name="cond_pagto">Condição de Pagamento</string>
+    <string name="vendedor">Vendedor</string>
+    <string name="save_pedido">SALVAR PEDIDO</string>
 </resources>

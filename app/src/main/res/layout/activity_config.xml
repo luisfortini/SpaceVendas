@@ -25,6 +25,7 @@
             style="@style/edit_text"
             android:id="@+id/host_config"
             android:hint="@string/label_host"
+            android:background="@drawable/edit_text"
             />
 
         <EditText
@@ -32,13 +33,15 @@
             android:id="@+id/port_config"
             android:hint="@string/label_port"
             android:inputType="number"
+            android:background="@drawable/edit_text"
             />
         <CheckBox
             android:id="@+id/https_config"
             android:text="@string/http"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp"
+            />
 
 
 
