@@ -75,15 +75,8 @@ class ProdutoActivity : AppCompatActivity() {
 
     private fun setAdapterProduto(produtoList: List<ProdutoModel>) {
         val produtoAdapter = ProdutoAdapter(this, produtoList) { id ->
-            val view: View = layoutInflater.inflate(R.layout.modal_produto, null)
-//            val descModal = view.findViewById<TextView>(R.id.desc_modal_produto)
-//            val inputPreco = view.findViewById<EditText>(R.id.preco)
-//            descModal.text = "taetse"
-//            inputPreco.setText("${produtoList[id].precoVenda}")
-            val dialog = BottomSheetDialog(this)
-            dialog.setContentView(view)
-            dialog.show()
-
+            val dialog = ProdutoDialog(id)
+            dialog.show(supportFragmentManager, dialog.tag)
         }
 
         val rv = findViewById<RecyclerView>(R.id.rv_produtos)

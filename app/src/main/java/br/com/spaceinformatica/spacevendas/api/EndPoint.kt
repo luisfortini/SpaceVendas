@@ -17,10 +17,16 @@ interface EndPoint {
     @GET("apivendas/appcliente.rule?sys=AVR")
     fun getClientes(
         @Query("usuario") usuario: String,
-        @Query("filial") filial: Int
+        @Query("filial") filial: Int,
     ): Call<ResponseBody>
 
     @GET("apivendas/appproduto.rule?sys=AVR")
     fun getProdutos(@Query("filial") filia: Int): Call<ResponseBody>
+
+    @GET("apivendas/appunidadepro.rule?sys=AVR")
+    fun getUnidadePro(
+        @Query("filial") filial: Int,
+        @Query("codigoproduto") codigoproduto: Int,
+    ): Call<ResponseBody>
 
 }

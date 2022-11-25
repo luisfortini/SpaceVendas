@@ -150,6 +150,7 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
 
         inputPass = findViewById(R.id.login_pass)
+        inputPass.setSelectAllOnFocus(true)
         val user = inputUser.text.toString()
         val pass = inputPass.text.toString()
         val filialModel: FilialModel =
