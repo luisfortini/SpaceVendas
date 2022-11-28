@@ -27,6 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import br.com.spaceinformatica.spacevendas.DadosItensActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class DadosPedidoFragment : Fragment() {
@@ -37,7 +38,7 @@ class DadosPedidoFragment : Fragment() {
     private lateinit var spinnerVendedor: Spinner
     private lateinit var textCliente: TextView
     private lateinit var textTotalPedido: TextView
-    private var totalPedido: Double = 0.00
+    private lateinit var btnAddFloat: FloatingActionButton
 
     companion object {
         fun newInstance() = DadosPedidoFragment()
@@ -58,10 +59,12 @@ class DadosPedidoFragment : Fragment() {
         textCliente = view.findViewById(R.id.desc_cliente)
         textCliente.text = "${CLIENTE_ATIVO.codigoCliente} - ${CLIENTE_ATIVO.fantasiaCliente}"
 
-        val totalPedido = getTotalPedido()
-        textTotalPedido = view.findViewById(R.id.total_pedido)
-        textTotalPedido.text = "Total do Pedido: R$ $totalPedido"
+        getTotalPedido()
 
+        btnAddFloat = view.findViewById(R.id.float_button_add_produto)
+        btnAddFloat.setOnClickListener {
+            activity?.finish()
+        }
 
     }
 
@@ -97,7 +100,7 @@ class DadosPedidoFragment : Fragment() {
 
     }
 
-    fun setSpinnerNatOper(natOperArray: JSONArray){
+    fun setSpinnerNatOper(natOperArray: JSONArray) {
         val type = object : TypeToken<List<NatOperModel>>() {}.type
         val natOperList =
             Gson().fromJson<List<NatOperModel>>(natOperArray.toString(),
@@ -109,7 +112,7 @@ class DadosPedidoFragment : Fragment() {
         spinnerNatOper.adapter = adapterNatOper
     }
 
-    fun setSpinnerFormaPagto(formaPagtoArray: JSONArray){
+    fun setSpinnerFormaPagto(formaPagtoArray: JSONArray) {
         val type = object : TypeToken<List<FormaPagtoModel>>() {}.type
         val list =
             Gson().fromJson<List<NatOperModel>>(formaPagtoArray.toString(),
@@ -121,8 +124,8 @@ class DadosPedidoFragment : Fragment() {
         spinnerFormaPagto.adapter = adapter
     }
 
-    fun setSpinnerCondPagto(condPagtoArray: JSONArray){
-        val type = object : TypeToken<List<CondicaoPagtoModel>>(){}.type
+    fun setSpinnerCondPagto(condPagtoArray: JSONArray) {
+        val type = object : TypeToken<List<CondicaoPagtoModel>>() {}.type
         val list =
             Gson().fromJson<List<NatOperModel>>(condPagtoArray.toString(),
                 type)
@@ -133,8 +136,8 @@ class DadosPedidoFragment : Fragment() {
         spinnerCondPagto.adapter = adapter
     }
 
-    fun setSpinnerVendedor(vendedorArray: JSONArray){
-        val type = object : TypeToken<List<VendedorModel>>(){}.type
+    fun setSpinnerVendedor(vendedorArray: JSONArray) {
+        val type = object : TypeToken<List<VendedorModel>>() {}.type
         val list =
             Gson().fromJson<List<NatOperModel>>(vendedorArray.toString(),
                 type)
@@ -145,11 +148,15 @@ class DadosPedidoFragment : Fragment() {
         spinnerVendedor.adapter = adapter
     }
 
-    fun getTotalPedido(): Double{
-        Thread{
-                totalPedido = getBuscaTotalPedido(DadosItensActivity)
+    fun getTotalPedido() {
+        Thread {
+            val totalPedido = getBuscaTotalPedido(activity)
+
+            kotlin.run {
+                textTotalPedido = view?.findViewById(R.id.total_pedido)!!
+                textTotalPedido.text = "Total do Pedido: R$ $totalPedido"
+            }
         }.start()
-        return totalPedido
     }
 
 }

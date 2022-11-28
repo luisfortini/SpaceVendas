@@ -49,6 +49,7 @@ fun getItensPedido(activity: Activity):List<ItensPedido>{
     val dao = app.db.itensPedidoDao()
     response = dao.getItensPedido()
     return response
+
 }
 
 fun deleteItensPedido(activity: Activity){
@@ -57,11 +58,12 @@ fun deleteItensPedido(activity: Activity){
     dao.deleteItensPedido()
 }
 
-fun getBuscaTotalPedido(activity: Activity): Double{
-    val app = activity.application as App
-    val dao = app.db.itensPedidoDao()
-    val response = dao.getTotalPedido()
-    return response
+fun getBuscaTotalPedido(activity: Activity?): Double{
+
+        val app = activity?.application as App
+        val dao = app.db.itensPedidoDao()
+        val response = dao.getTotalPedido()
+        return response
 }
 
 
