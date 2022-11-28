@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btn_menu_dados_pedido"
+        android:icon="@drawable/ic_baseline_assignment"
+        android:title="@string/dados_pedido"
+        />
+
+    <item
+        android:id="@+id/btn_menu_itens_pedido"
+        android:icon="@drawable/ic_baseline_shopping_cart"
+        android:title="@string/items_pedido"/>
+</menu>

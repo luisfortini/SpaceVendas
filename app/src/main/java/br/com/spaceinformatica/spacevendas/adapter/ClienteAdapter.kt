@@ -46,7 +46,7 @@ class ClienteAdapter(
             limiteCliente.text = "Limite: ${clienteModel.limiteCliente}"
             val cardCliente = itemView.findViewById<ConstraintLayout>(R.id.card_cliente)
             cardCliente.setOnClickListener {
-                onItemClickListener.invoke(clienteModel.codigoCliente)
+                onItemClickListener.invoke(adapterPosition)
             }
 
         }

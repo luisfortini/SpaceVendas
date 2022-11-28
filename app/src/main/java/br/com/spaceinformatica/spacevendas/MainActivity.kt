@@ -15,6 +15,7 @@ import br.com.spaceinformatica.spacevendas.model.FilialModel
 import br.com.spaceinformatica.spacevendas.model.LoginBody
 import br.com.spaceinformatica.spacevendas.utils.FILIAL
 import br.com.spaceinformatica.spacevendas.utils.TOKEN
+import br.com.spaceinformatica.spacevendas.utils.USUARIO
 import br.com.spaceinformatica.spacevendas.utils.createUrlBase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -164,6 +165,7 @@ class MainActivity : AppCompatActivity() {
                         val filial = data.getInt("filialCodigo")
                         TOKEN = data.getString("token")
                         FILIAL = filial.toString()
+                        USUARIO = usuario
 
                         val intent = Intent(this@MainActivity, ClienteActivity::class.java)
                         intent.putExtra("usuario", usuario)

@@ -9,6 +9,6 @@ data class FilialModel(
     val filFantasia: String
 ){
     override fun toString(): String {
-        return filCodigo.toString() + " - " + filFantasia
+        return "$filCodigo - $filFantasia"
     }
 }

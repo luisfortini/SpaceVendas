@@ -35,7 +35,7 @@ class ProdutoActivity : AppCompatActivity() {
 
         buttonFloat = findViewById(R.id.float_button_produtos)
         buttonFloat.setOnClickListener {
-            startActivity(Intent(this,DadosPedidoActivity::class.java))
+            startActivity(Intent(this,DadosItensActivity::class.java))
         }
 
 

@@ -29,4 +29,10 @@ interface EndPoint {
         @Query("codigoproduto") codigoproduto: Int,
     ): Call<ResponseBody>
 
+    @GET("apivendas/appdadosfecharpedido.rule?sys=AVR")
+    fun getDadosFecharPedido(
+        @Query("codigoCliente") codigoCliente: Int,
+        @Query("usuario") usuario: String,
+        @Query("filial") filial: Int
+    ): Call<ResponseBody>
 }

@@ -17,4 +17,9 @@
     <string name="cond_pagto">Condição de Pagamento</string>
     <string name="vendedor">Vendedor</string>
     <string name="save_pedido">SALVAR PEDIDO</string>
+    <string name="dados_pedido">Dados do Pedido</string>
+    <string name="items_pedido">Itens do Pedido</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">Cancelar Pedido</string>
 </resources>

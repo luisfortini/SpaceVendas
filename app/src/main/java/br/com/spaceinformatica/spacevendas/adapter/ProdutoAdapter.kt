@@ -53,7 +53,6 @@ class ProdutoAdapter(
             val cardProduto = itemView.findViewById<ConstraintLayout>(R.id.card_produto)
             cardProduto.setOnClickListener {
                 onItemClickListener(produtoModel.codigoProduto)
-
             }
         }
     }
