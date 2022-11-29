@@ -52,6 +52,15 @@ fun getItensPedido(activity: Activity):List<ItensPedido>{
         return response
 }
 
+fun getItemPedido(activity: Activity?, numItem: Int):ItensPedido{
+
+    lateinit var response: List<ItensPedido>
+    val app = activity?.application as App
+    val dao = app.db.itensPedidoDao()
+    response = dao.getItemPedido(numItem)
+    return response[0]
+}
+
 fun deleteItensPedido(activity: Activity){
     val app = activity.application as App
     val dao = app.db.itensPedidoDao()
@@ -70,6 +79,12 @@ fun getBuscaTotalPedido(activity: Activity?): Double{
         val dao = app.db.itensPedidoDao()
         val response = dao.getTotalPedido()
         return response
+}
+
+fun atualizaItemPedido(activity: Activity?,numItem: Int, qtde: Double, precoVenda: Double){
+    val app = activity?.application as App
+    val dao = app.db.itensPedidoDao()
+    dao.atualizaItemPedido(numItem,qtde, precoVenda)
 }
 
 

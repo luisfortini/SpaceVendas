@@ -1,10 +1,7 @@
 package br.com.spaceinformatica.spacevendas
 
-import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -59,6 +56,7 @@ class ItensPedidoFragment : Fragment() {
         progressBar.visibility = View.GONE
 
     }
+
     fun onCreateDialog(savedInstanceState: Bundle?, id: Int): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -67,6 +65,10 @@ class ItensPedidoFragment : Fragment() {
                     DialogInterface.OnClickListener { dialog, which ->
                         if(which == 0){
                             Toast.makeText(view?.context!!, "Alterar $id", Toast.LENGTH_SHORT).show()
+
+                            val dialog = ItemPedidoDialog(id)
+                            dialog.show(childFragmentManager,dialog.tag)
+
                         } else if( which == 1){
                             deletarItem(id)
                         }

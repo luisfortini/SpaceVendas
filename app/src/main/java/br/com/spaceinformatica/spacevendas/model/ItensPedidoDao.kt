@@ -1,7 +1,6 @@
 package br.com.spaceinformatica.spacevendas.model
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -21,8 +20,11 @@ interface ItensPedidoDao {
     fun deleteItem(numItem: Int)
 
     @Query("SELECT * FROM ITENSPEDIDO WHERE NUMITEM = :numItem")
-    fun getItemPedido(numItem: Int): ItensPedido
+    fun getItemPedido(numItem: Int): List<ItensPedido>
 
     @Query("SELECT SUM(QUANTIDADE * PRECOVENDA)  TOTAL FROM ITENSPEDIDO")
     fun getTotalPedido():Double
+
+    @Query("UPDATE ITENSPEDIDO SET QUANTIDADE = :qtde, PRECOVENDA = :precoVenda WHERE NUMITEM = :numItem")
+    fun atualizaItemPedido(numItem: Int, qtde: Double, precoVenda: Double)
 }

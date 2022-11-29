@@ -45,6 +45,7 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/edit_text"
         android:hint="Unidade"
+        android:enabled="false"
         app:layout_constraintEnd_toStartOf="@id/input_qtde_modal_item_pedido"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_desc_item_pedido" />
