@@ -54,6 +54,7 @@ class ItensPedidoFragment : Fragment() {
         rv?.layoutManager = LinearLayoutManager(view?.context!!)
         rv?.adapter = itensAdapter
 
+
         progressBar = view?.findViewById(R.id.progress_itens_pedido)!!
         progressBar.visibility = View.GONE
 
