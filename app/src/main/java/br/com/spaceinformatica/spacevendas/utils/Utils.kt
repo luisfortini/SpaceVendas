@@ -44,18 +44,24 @@ fun getUrlBase(): String {
 }
 
 fun getItensPedido(activity: Activity):List<ItensPedido>{
-    lateinit var response: List<ItensPedido>
-    val app = activity.application as App
-    val dao = app.db.itensPedidoDao()
-    response = dao.getItensPedido()
-    return response
 
+        lateinit var response: List<ItensPedido>
+        val app = activity.application as App
+        val dao = app.db.itensPedidoDao()
+        response = dao.getItensPedido()
+        return response
 }
 
 fun deleteItensPedido(activity: Activity){
     val app = activity.application as App
     val dao = app.db.itensPedidoDao()
     dao.deleteItensPedido()
+}
+
+fun deleteItem(activity: Activity?, numItem: Int){
+    val app = activity?.application as App
+    val dao = app.db.itensPedidoDao()
+    dao.deleteItem(numItem)
 }
 
 fun getBuscaTotalPedido(activity: Activity?): Double{

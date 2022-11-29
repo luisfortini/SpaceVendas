@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="arrays_item_options">
+
+        <item>Alterar</item>
+        <item>Excluir</item>
+
+    </string-array>
+
+</resources>

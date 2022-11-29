@@ -56,16 +56,6 @@ class DadosPedidoFragment : Fragment() {
 
         getDadosFecharPedido()
 
-        textCliente = view.findViewById(R.id.desc_cliente)
-        textCliente.text = "${CLIENTE_ATIVO.codigoCliente} - ${CLIENTE_ATIVO.fantasiaCliente}"
-
-        getTotalPedido()
-
-        btnAddFloat = view.findViewById(R.id.float_button_add_produto)
-        btnAddFloat.setOnClickListener {
-            activity?.finish()
-        }
-
     }
 
     private fun getDadosFecharPedido() {
@@ -146,17 +136,6 @@ class DadosPedidoFragment : Fragment() {
             list)
         spinnerVendedor = view?.findViewById(R.id.spinner_vendedor)!!
         spinnerVendedor.adapter = adapter
-    }
-
-    fun getTotalPedido() {
-        Thread {
-            val totalPedido = getBuscaTotalPedido(activity)
-
-            kotlin.run {
-                textTotalPedido = view?.findViewById(R.id.total_pedido)!!
-                textTotalPedido.text = "Total do Pedido: R$ $totalPedido"
-            }
-        }.start()
     }
 
 }

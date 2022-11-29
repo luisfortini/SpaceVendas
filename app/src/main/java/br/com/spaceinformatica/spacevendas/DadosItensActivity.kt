@@ -11,6 +11,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import br.com.spaceinformatica.spacevendas.databinding.ActivityDadosItensBinding
 import br.com.spaceinformatica.spacevendas.databinding.ActivityMainBinding
+import br.com.spaceinformatica.spacevendas.utils.CLIENTE_ATIVO
+import br.com.spaceinformatica.spacevendas.utils.getBuscaTotalPedido
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -27,19 +29,27 @@ class DadosItensActivity : AppCompatActivity() {
         binding = ActivityDadosItensBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       initNavigation()
+        initNavigation()
+        getTotalPedido()
 
+        binding.descCliente.text = "${CLIENTE_ATIVO.codigoCliente} - ${CLIENTE_ATIVO.fantasiaCliente}"
+
+        binding.floatButtonAddProduto.setOnClickListener {
+            finish()
+        }
     }
 
-    private fun initNavigation(){
-        with(binding.bottomNavMenu) {setupWithNavController(navController)}
+    private fun initNavigation() {
+        with(binding.bottomNavMenu) { setupWithNavController(navController) }
     }
 
+    fun getTotalPedido() {
+        Thread {
+            val totalPedido = getBuscaTotalPedido(this)
 
-//   private fun replaceFragment(fragment: Fragment){
-//val fragmentManager = supportFragmentManager
-//       val fragmentTrans
-//
-//   }
-
+            runOnUiThread {
+                binding.totalPedido.text = "Total do Pedido: R$ $totalPedido"
+            }
+        }.start()
+    }
 }

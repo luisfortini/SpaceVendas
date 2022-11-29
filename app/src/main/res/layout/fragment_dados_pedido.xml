@@ -11,46 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/linear_desc_modal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@color/white"
-            android:elevation="4dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/spinner_modal_produto"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/desc_cliente"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="16dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:text="548778 - RAZAO SOCIAL DOC CLIENTE AQUI NESSE LUAGR" />
-
-            <TextView
-                android:id="@+id/total_pedido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:gravity="center"
-                android:paddingBottom="8dp"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/desc_modal_produto"
-                tools:text="VALOR TOTAL: R$ 14.458,44" />
-        </LinearLayout>
 
         <TextView
             style="@style/label_dados_pedido"
@@ -141,16 +106,5 @@
         android:background="@drawable/button_primary"
         android:text="@string/save_pedido"
         android:layout_gravity="bottom"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/float_button_add_produto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/ic_baseline_add"
-       android:layout_gravity="bottom|end" />
-
-
 
 </FrameLayout>
