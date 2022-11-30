@@ -143,8 +143,6 @@ class MainActivity : AppCompatActivity() {
         val pass = inputPass.text.toString()
         val filialModel: FilialModel =
             spinnerFilial.adapter.getItem(spinnerFilial.selectedItemPosition) as FilialModel
-//        val filialId = spinnerFilial.selectedItemId.toInt()
-
 
         val loginBody = LoginBody(user, pass, filialModel.filCodigo)
 
@@ -163,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                         val data = JSONObject(response.body()?.string()!!)
                         val usuario = data.getString("login")
                         val filial = data.getInt("filialCodigo")
-                        TOKEN = data.getString("token")
+                        TOKEN = "SPACE ${data.getString("token")}"
                         FILIAL = filial.toString()
                         USUARIO = usuario
 

@@ -1,23 +1,16 @@
 package br.com.spaceinformatica.spacevendas
 
+import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
-import br.com.spaceinformatica.spacevendas.model.CondicaoPagtoModel
-import br.com.spaceinformatica.spacevendas.model.FormaPagtoModel
-import br.com.spaceinformatica.spacevendas.model.NatOperModel
-import br.com.spaceinformatica.spacevendas.model.VendedorModel
-import br.com.spaceinformatica.spacevendas.utils.CLIENTE_ATIVO
-import br.com.spaceinformatica.spacevendas.utils.FILIAL
-import br.com.spaceinformatica.spacevendas.utils.USUARIO
-import br.com.spaceinformatica.spacevendas.utils.getBuscaTotalPedido
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
@@ -26,8 +19,12 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import br.com.spaceinformatica.spacevendas.DadosItensActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import br.com.spaceinformatica.spacevendas.model.*
+import br.com.spaceinformatica.spacevendas.utils.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DadosPedidoFragment : Fragment() {
@@ -36,9 +33,8 @@ class DadosPedidoFragment : Fragment() {
     private lateinit var spinnerFormaPagto: Spinner
     private lateinit var spinnerCondPagto: Spinner
     private lateinit var spinnerVendedor: Spinner
-    private lateinit var textCliente: TextView
-    private lateinit var textTotalPedido: TextView
-    private lateinit var btnAddFloat: FloatingActionButton
+    private lateinit var btnSavePedido: Button
+    private lateinit var progressBar: ProgressBar
 
     companion object {
         fun newInstance() = DadosPedidoFragment()
@@ -53,8 +49,20 @@ class DadosPedidoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressBar = view?.findViewById(R.id.progress_dados_pedido_frag)!!
+        progressBar.visibility = View.GONE
+
+        //Chamada para atualizar a lista de produtos em Utils
+        Thread {
+            getItensPedido(activity)
+        }.start()
 
         getDadosFecharPedido()
+
+        btnSavePedido = view.findViewById(R.id.btn_save_pedido)
+        btnSavePedido.setOnClickListener {
+            savePedido()
+        }
 
     }
 
@@ -62,7 +70,7 @@ class DadosPedidoFragment : Fragment() {
 
         HTTPClient.retrofit()
             .create(EndPoint::class.java)
-            .getDadosFecharPedido(CLIENTE_ATIVO.codigoCliente, USUARIO, FILIAL.toInt())
+            .getDadosFecharPedido(CLIENTE_ATIVO?.codigoCliente!!, USUARIO, FILIAL.toInt())
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
@@ -138,4 +146,142 @@ class DadosPedidoFragment : Fragment() {
         spinnerVendedor.adapter = adapter
     }
 
+    fun savePedido() {
+
+
+        progressBar.visibility = View.VISIBLE
+
+
+        val itemsBody = createItemsBody()
+        val pedidoBody = createPedidoBody(itemsBody)
+
+        val bodyRequest = Gson().toJson(pedidoBody).toRequestBody("application/json".toMediaType())
+
+        HTTPClient.retrofit()
+            .create(EndPoint::class.java)
+            .postSalvarPedido(bodyRequest, TOKEN)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>,
+                ) {
+                    progressBar.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        val data = JSONObject(response.body()?.string()!!)
+                        if(data.getInt("status")==200) {
+
+                            val dialog = AlertDialog.Builder(view?.context!!)
+                            dialog.setTitle("SUCESSO")
+                            dialog.setMessage("Pedido gravado com sucesso!")
+                            dialog.create().show()
+
+                            resetPedido()
+                        } else {
+
+                            Toast.makeText(view?.context,data.getString("mensagemUsuario"),
+                            Toast.LENGTH_LONG).show()
+                        }
+
+                    } else {
+                        val dataError = JSONObject(response.errorBody()?.string()!!)
+                        Toast.makeText(view?.context,
+                            dataError.getString("mensagemUsuario"),
+                            Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    progressBar.visibility = View.GONE
+
+                    Toast.makeText(
+                        view?.context,
+                        "Falha na conexão! Verifique a internet ou as configurações!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+
+
+    }
+
+    fun createItemsBody(): List<ItemBody> {
+
+        val listItems: MutableList<ItemBody> = mutableListOf()
+        ITEMS_PEDIDO.forEach {
+            listItems.add(ItemBody(
+                it.codigoProduto,
+                it.quantidade,
+                it.unidade,
+                it.qtdeUnidade,
+                0.0,
+                it.quantidade * it.precoVenda,
+                it.precoVenda))
+        }
+        Log.i("teste", listItems.toString())
+        return listItems
+    }
+
+    fun createPedidoBody(itemsBoby: List<ItemBody>): PedidoBody {
+
+        val spinnerNatOper = view?.findViewById<Spinner>(R.id.spinner_natoper)
+        val natOperModel: NatOperModel =
+            spinnerNatOper?.adapter?.getItem(spinnerNatOper.selectedItemPosition) as NatOperModel
+
+        val spinnerFormaPagto = view?.findViewById<Spinner>(R.id.spinner_forma_pagto)
+        val formaPagtoModel: FormaPagtoModel =
+            spinnerFormaPagto?.adapter?.getItem(spinnerFormaPagto.selectedItemPosition) as FormaPagtoModel
+
+        val spinnerCondPagto = view?.findViewById<Spinner>(R.id.spinner_cond_pagto)
+        val condPagtoModel: CondicaoPagtoModel =
+            spinnerCondPagto?.adapter?.getItem(spinnerCondPagto.selectedItemPosition) as CondicaoPagtoModel
+
+        val spinnerVendedor = view?.findViewById<Spinner>(R.id.spinner_vendedor)
+        val vendedorModel: VendedorModel =
+            spinnerVendedor?.adapter?.getItem(spinnerVendedor.selectedItemPosition) as VendedorModel
+
+        val editObservacao = view?.findViewById<EditText>(R.id.input_obs)
+        val observacao = editObservacao?.text.toString()
+
+        val data = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date()).toString()
+        val hora = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date()).toString()
+        val pedidoBody = PedidoBody(
+            CLIENTE_ATIVO?.codigoCliente!!,
+            condPagtoModel.codigoCondicao,
+            data,
+            formaPagtoModel.codigoFormaPagto,
+            hora,
+            natOperModel.codigoNatureza,
+            "${vendedorModel.codigoVendedor}${data.replace("/", "")}${hora.replace(":","")} ",
+            observacao,
+            "",
+            "",
+            "",
+            "BALCAO",
+            0.0,
+            0.0,
+            TOTAL_PEDIDO,
+            vendedorModel.codigoVendedor,
+            itemsBoby
+        )
+        return pedidoBody
+    }
+
+    fun resetPedido(){
+        NUMERO_ITEM = 1
+        CLIENTE_ATIVO = null
+        ITEMS_PEDIDO = mutableListOf()
+        TOTAL_PEDIDO = 0.00
+
+        Thread{
+            deleteItensPedido(activity)
+        }
+
+        Toast.makeText(view?.context,
+            "Pedido Gravado com Sucesso",
+            Toast.LENGTH_LONG).show()
+
+        activity?.finish()
+    }
 }
+
+

@@ -1,8 +1,10 @@
 package br.com.spaceinformatica.spacevendas.api
 
+import br.com.spaceinformatica.spacevendas.utils.TOKEN
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.*
 
 
@@ -34,5 +36,11 @@ interface EndPoint {
         @Query("codigoCliente") codigoCliente: Int,
         @Query("usuario") usuario: String,
         @Query("filial") filial: Int
+    ): Call<ResponseBody>
+
+
+    @POST("vendasguardian/pedido")
+    fun postSalvarPedido(@Body requestBody: RequestBody,
+    @Header("Authorization") authorization: String
     ): Call<ResponseBody>
 }

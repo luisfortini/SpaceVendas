@@ -107,4 +107,10 @@
         android:text="@string/save_pedido"
         android:layout_gravity="bottom"/>
 
+    <ProgressBar
+        android:id="@+id/progress_dados_pedido_frag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
 </FrameLayout>

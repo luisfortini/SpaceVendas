@@ -3,18 +3,19 @@ package br.com.spaceinformatica.spacevendas
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.spaceinformatica.spacevendas.adapter.ItensPedidoAdapter
 import br.com.spaceinformatica.spacevendas.model.ItensPedido
-import br.com.spaceinformatica.spacevendas.utils.*
+import br.com.spaceinformatica.spacevendas.utils.deleteItem
+import br.com.spaceinformatica.spacevendas.utils.getItensPedido
 
 
 class ItensPedidoFragment : Fragment() {
@@ -36,7 +37,7 @@ class ItensPedidoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-      getItensPedido()
+        getItensPedido()
 
     }
 
@@ -57,19 +58,17 @@ class ItensPedidoFragment : Fragment() {
 
     }
 
-    fun onCreateDialog(savedInstanceState: Bundle?, id: Int): Dialog {
+    private fun onCreateDialog(savedInstanceState: Bundle?, id: Int): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle("O que deseja fazer?")
                 .setItems(R.array.arrays_item_options,
                     DialogInterface.OnClickListener { dialog, which ->
-                        if(which == 0){
-                            Toast.makeText(view?.context!!, "Alterar $id", Toast.LENGTH_SHORT).show()
-
+                        if (which == 0) {
                             val dialog = ItemPedidoDialog(id)
-                            dialog.show(childFragmentManager,dialog.tag)
+                            dialog.show(childFragmentManager, dialog.tag)
 
-                        } else if( which == 1){
+                        } else if (which == 1) {
                             deletarItem(id)
                         }
                     })
@@ -77,31 +76,34 @@ class ItensPedidoFragment : Fragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    private fun deletarItem(numItem: Int){
+    private fun deletarItem(numItem: Int) {
 
         val dialog = AlertDialog.Builder(view?.context!!)
         dialog.setTitle("Excluir item?")
         dialog.setMessage("Deseja realmente excluir este item?")
         dialog.setPositiveButton(android.R.string.ok) { dialog, which ->
-            Thread{
-                deleteItem(activity,numItem)
+            Thread {
+                deleteItem(activity, numItem)
             }.start()
         }
-        dialog.setNegativeButton(android.R.string.cancel){dialog, which ->
+        dialog.setNegativeButton(android.R.string.cancel) { dialog, which ->
             dialog.dismiss()
         }
         dialog.create().show()
 
     }
 
-    private fun getItensPedido(){
-        Thread{
+    private fun getItensPedido() {
+        Thread {
             val listItensPedido = getItensPedido(activity!!)
             kotlin.run {
-                if(listItensPedido.isNotEmpty()){
-                    setAdapterItensPedido(listItensPedido)
+                setAdapterItensPedido(listItensPedido)
+
+                val textMsg = view?.findViewById<TextView>(R.id.text_msg_itens_pedido)
+                if (listItensPedido.isNotEmpty()) {
+                    textMsg?.text = ""
                 } else {
-                    Toast.makeText(view?.context,"Nenhum produto adicionado ao pedido.", Toast.LENGTH_SHORT).show()
+                    textMsg?.text = "Nenhum produto adicionado ao pedido."
                 }
             }
         }.start()

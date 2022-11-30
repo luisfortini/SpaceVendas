@@ -49,9 +49,11 @@ class ItemPedidoDialog(val numItem: Int) : DialogFragment() {
                 inputUnidade.setText("${itemPedido.unidade} / ${itemPedido.qtdeUnidade}")
 
                 inputQtde = view.findViewById(R.id.input_qtde_modal_item_pedido)
+                inputQtde.setSelectAllOnFocus(true)
                 inputQtde.setText(itemPedido.quantidade.toString())
 
                 inputPreco = view.findViewById(R.id.input_preco_modal_item_pedido)
+                inputPreco.setSelectAllOnFocus(true)
                 inputPreco.setText(itemPedido.precoVenda.toString())
             }
         }.start()

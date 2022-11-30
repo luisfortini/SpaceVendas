@@ -1,12 +1,18 @@
 package br.com.spaceinformatica.spacevendas
 
+import android.app.LauncherActivity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import br.com.spaceinformatica.spacevendas.databinding.ActivityDadosItensBinding
+import br.com.spaceinformatica.spacevendas.model.ItemBody
+import br.com.spaceinformatica.spacevendas.model.ItensPedido
 import br.com.spaceinformatica.spacevendas.utils.CLIENTE_ATIVO
 import br.com.spaceinformatica.spacevendas.utils.getBuscaTotalPedido
+import br.com.spaceinformatica.spacevendas.utils.getItensPedido
+import okhttp3.RequestBody
 
 class DadosItensActivity : AppCompatActivity() {
 
@@ -23,11 +29,13 @@ class DadosItensActivity : AppCompatActivity() {
         initNavigation()
         getTotalPedido()
 
-        binding.descCliente.text = "${CLIENTE_ATIVO.codigoCliente} - ${CLIENTE_ATIVO.fantasiaCliente}"
+        binding.descCliente.text = "${CLIENTE_ATIVO?.codigoCliente!!} - ${CLIENTE_ATIVO?.fantasiaCliente!!}"
 
         binding.floatButtonAddProduto.setOnClickListener {
+            startActivity(Intent(this,ProdutoActivity::class.java))
             finish()
         }
+
     }
 
     private fun initNavigation() {
@@ -43,4 +51,6 @@ class DadosItensActivity : AppCompatActivity() {
             }
         }.start()
     }
+
+
 }

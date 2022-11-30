@@ -1,15 +1,17 @@
 package br.com.spaceinformatica.spacevendas
 
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.spaceinformatica.spacevendas.adapter.ClienteAdapter
@@ -21,21 +23,21 @@ import br.com.spaceinformatica.spacevendas.utils.CLIENTE_ATIVO
 import br.com.spaceinformatica.spacevendas.utils.NUMERO_ITEM
 import br.com.spaceinformatica.spacevendas.utils.deleteItensPedido
 import br.com.spaceinformatica.spacevendas.utils.getItensPedido
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class ClienteActivity : AppCompatActivity() {
 
     private lateinit var progressBar: ProgressBar
     private lateinit var itensPedido: List<ItensPedido>
+    private lateinit var clienteList: List<ClienteModel>
+    private lateinit var clienteAdapter: ClienteAdapter
+    private lateinit var searchCliente: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class ClienteActivity : AppCompatActivity() {
 
     }
 
-    fun getClientes(filial: Int, usuario: String) {
+    private fun getClientes(filial: Int, usuario: String) {
 
 
         HTTPClient.retrofit()
@@ -68,19 +70,21 @@ class ClienteActivity : AppCompatActivity() {
                         if (data.getBoolean("resposta")) {
 
                             val clienteArray = data.getJSONArray("dados")
-                            val clienteList = GsonBuilder()
+                            clienteList = mutableListOf()
+                            clienteList = GsonBuilder()
                                 .create()
                                 .fromJson(clienteArray.toString(), Array<ClienteModel>::class.java)
                                 .toList()
 
                             setAdapter(clienteList)
+                            getSeachCliente(clienteList)
 
 
                         } else {
                             Toast.makeText(
                                 this@ClienteActivity, data.getString("dados"),
                                 Toast.LENGTH_LONG
-                            )
+                            ).show()
                             Log.i("teste", data.getString("dados"))
                         }
 
@@ -100,16 +104,17 @@ class ClienteActivity : AppCompatActivity() {
     }
 
     private fun setAdapter(clienteList: List<ClienteModel>) {
-        val clienteAdapter = ClienteAdapter(this, clienteList) { id ->
+        clienteAdapter = ClienteAdapter(this, clienteList) { id ->
             verificaPedidoEmDigitacao(clienteList[id])
         }
 
         val rv = findViewById<RecyclerView>(R.id.rv_clientes)
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = clienteAdapter
+
     }
 
-    fun verificaPedidoEmDigitacao(cliente: ClienteModel) {
+    private fun verificaPedidoEmDigitacao(cliente: ClienteModel) {
         Thread {
             itensPedido = getItensPedido(this@ClienteActivity)
 
@@ -143,4 +148,42 @@ class ClienteActivity : AppCompatActivity() {
         }.start()
 
     }
+
+    private fun getSeachCliente(listCliente: List<ClienteModel>) {
+        searchCliente = findViewById(R.id.search_cliente)
+        searchCliente.setSelectAllOnFocus(true)
+        searchCliente.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val newListClient = mutableListOf<ClienteModel>()
+                listCliente.forEach {
+                    if (it.fantasiaCliente.contains(s.toString().uppercase()!!)
+                        || it.razaoCliente.contains(s.toString().uppercase()!!)
+                        || it.codigoCliente.toString().contains(s.toString().uppercase()!!)
+                    ){
+                    newListClient.add(it)
+                }
+                }
+                newListClient.toList()
+                setAdapter(newListClient)
+
+                val textMsg = findViewById<TextView>(R.id.text_msg)
+
+                if (newListClient.isEmpty()){
+                    textMsg.text = "Nenhum cliente encontrado"
+                } else {
+                    textMsg.text = ""
+                }
+
+            }
+        })
+
+    }
 }
+
+

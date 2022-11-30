@@ -8,7 +8,7 @@
     tools:context=".ClienteActivity">
 
     <EditText
-        android:id="@+id/edit_search"
+        android:id="@+id/search_cliente"
         android:background="@drawable/edit_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -29,7 +29,7 @@
         android:paddingTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_search"
+        app:layout_constraintTop_toBottomOf="@+id/search_cliente"
         tools:itemCount="15"
         tools:listitem="@layout/cliente_item" />
 
@@ -40,6 +40,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/rv.clientes"
-        app:layout_constraintTop_toTopOf="@+id/edit_search" />
+        app:layout_constraintTop_toTopOf="@+id/search_cliente" />
+
+    <TextView
+        android:id="@+id/text_msg"
+        tools:text="Nenhum cliente encontrado."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

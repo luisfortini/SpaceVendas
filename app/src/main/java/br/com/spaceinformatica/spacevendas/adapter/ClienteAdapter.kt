@@ -14,7 +14,7 @@ class ClienteAdapter(
     private val context: Context,
     private val clienteList: List<ClienteModel>,
     private val onItemClickListener: (Int) -> Unit)
-    :RecyclerView.Adapter<ClienteAdapter.ClienteViewHolder>(){
+    :RecyclerView.Adapter<ClienteAdapter.ClienteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClienteViewHolder {
         val clienteLayoutItem =
