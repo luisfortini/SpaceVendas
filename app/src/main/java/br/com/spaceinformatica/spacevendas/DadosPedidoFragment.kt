@@ -70,7 +70,7 @@ class DadosPedidoFragment : Fragment() {
 
         HTTPClient.retrofit()
             .create(EndPoint::class.java)
-            .getDadosFecharPedido(CLIENTE_ATIVO?.codigoCliente!!, USUARIO, FILIAL.toInt())
+            .getDadosFecharPedido(CLIENTE_ATIVO?.codigoCliente ?: 1, USUARIO, FILIAL.toInt())
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,

@@ -6,12 +6,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.spaceinformatica.spacevendas.adapter.ClienteAdapter
@@ -19,10 +23,8 @@ import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
 import br.com.spaceinformatica.spacevendas.model.ClienteModel
 import br.com.spaceinformatica.spacevendas.model.ItensPedido
-import br.com.spaceinformatica.spacevendas.utils.CLIENTE_ATIVO
-import br.com.spaceinformatica.spacevendas.utils.NUMERO_ITEM
-import br.com.spaceinformatica.spacevendas.utils.deleteItensPedido
-import br.com.spaceinformatica.spacevendas.utils.getItensPedido
+import br.com.spaceinformatica.spacevendas.utils.*
+import com.google.android.material.navigation.NavigationView
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -39,16 +41,14 @@ class ClienteActivity : AppCompatActivity() {
     private lateinit var clienteAdapter: ClienteAdapter
     private lateinit var searchCliente: EditText
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente)
 
         progressBar = findViewById(R.id.progress_cliente)
-
-        val filial = intent?.getIntExtra("filial", 1)
-        val usuario = intent?.getStringExtra("usuario")
-
-        getClientes(filial!!, usuario!!)
+        getClientes(FILIAL.toInt(), USUARIO)
 
     }
 

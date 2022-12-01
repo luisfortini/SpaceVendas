@@ -13,7 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpaceVendas"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DadosItensActivity"></activity>
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/title_activity_menu"
+            android:theme="@style/Theme.SpaceVendas.NoActionBar"></activity>
+        <activity android:name=".DadosItensActivity" />
         <activity android:name=".DadosPedidoActivity" />
         <activity android:name=".ProdutoActivity" />
         <activity android:name=".ClienteActivity" />

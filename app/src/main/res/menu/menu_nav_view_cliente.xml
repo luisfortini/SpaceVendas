@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group>
+
+        <item
+            android:id="@+id/nav_item_home"
+            android:icon="@drawable/ic_baseline_home"
+            android:title="@string/home" />
+
+        <item
+            android:id="@+id/nav_item_clientes"
+            android:icon="@drawable/ic_baseline_people"
+            android:title="@string/client" />
+
+        <item
+            android:id="@+id/nav_item_produtos"
+            android:icon="@drawable/ic_baseline_ballot"
+            android:title="@string/product" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_item_ajuda"
+            android:title="@string/help">
+            <menu>
+                <item
+                    android:id="@+id/nav_item_support"
+                    android:title="@string/support" />
+
+                <item
+                    android:id="@+id/nav_item_version"
+                    android:title="@string/version" />
+            </menu>
+
+        </item>
+    </group>
+</menu>

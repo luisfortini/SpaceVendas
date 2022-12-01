@@ -13,6 +13,7 @@ lateinit var TOKEN: String
 lateinit var FILIAL: String
 var NUMERO_ITEM: Int = 1
 lateinit var USUARIO: String
+lateinit var COLABORADOR: String
 var CLIENTE_ATIVO: ClienteModel? = null
 var ITEMS_PEDIDO: MutableList<ItensPedido> = mutableListOf()
 var TOTAL_PEDIDO: Double = 0.00

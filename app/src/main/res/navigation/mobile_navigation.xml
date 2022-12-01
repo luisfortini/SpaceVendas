@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_item_home">
+
+    <fragment
+        android:id="@+id/nav_item_home"
+        android:name="br.com.spaceinformatica.spacevendas.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home" />
+
+    <activity
+        android:id="@+id/nav_item_clientes"
+        android:name="br.com.spaceinformatica.spacevendas.ClienteActivity"
+        android:label="activity_cliente"
+        tools:layout="@layout/activity_cliente" />
+
+    <activity
+        android:id="@+id/nav_item_produtos"
+        android:name="br.com.spaceinformatica.spacevendas.ProdutoActivity"
+        android:label="activity_produto"
+        tools:layout="@layout/activity_produto" />
+
+
+</navigation>

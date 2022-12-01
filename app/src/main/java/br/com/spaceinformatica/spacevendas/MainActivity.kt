@@ -13,10 +13,7 @@ import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
 import br.com.spaceinformatica.spacevendas.model.FilialModel
 import br.com.spaceinformatica.spacevendas.model.LoginBody
-import br.com.spaceinformatica.spacevendas.utils.FILIAL
-import br.com.spaceinformatica.spacevendas.utils.TOKEN
-import br.com.spaceinformatica.spacevendas.utils.USUARIO
-import br.com.spaceinformatica.spacevendas.utils.createUrlBase
+import br.com.spaceinformatica.spacevendas.utils.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
@@ -164,10 +161,9 @@ class MainActivity : AppCompatActivity() {
                         TOKEN = "SPACE ${data.getString("token")}"
                         FILIAL = filial.toString()
                         USUARIO = usuario
+                        COLABORADOR = data.getString("usuarioNome")
 
-                        val intent = Intent(this@MainActivity, ClienteActivity::class.java)
-                        intent.putExtra("usuario", usuario)
-                        intent.putExtra("filial", filial)
+                        val intent = Intent(this@MainActivity, MenuActivity::class.java)
                         startActivity(intent)
 
                     } else {
