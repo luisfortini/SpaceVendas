@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeFragment"
-    >
+    tools:context=".HomeFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <LinearLayout
         android:id="@+id/linear_header_usuario"
@@ -15,20 +20,18 @@
         android:background="@color/white"
         android:elevation="4dp"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_gravity="top"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/bem_vindo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:paddingTop="8dp"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/desc_modal_produto"
-            android:text="Bem Vindo,"/>
+            android:text="Bem Vindo,"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/desc_usuario"
@@ -40,7 +43,33 @@
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="MANUTMAC" />
-
     </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_menu_home"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_menu_home"
+            app:layout_constraintTop_toBottomOf="@id/linear_header_usuario"
+            app:layout_constraintBottom_toTopOf="@id/rodape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="16dp"
+            />
+
+    <TextView
+        android:id="@+id/rodape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:gravity="center|bottom"
+        android:paddingTop="8dp"
+        android:text="Versão 1.0.0.0"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

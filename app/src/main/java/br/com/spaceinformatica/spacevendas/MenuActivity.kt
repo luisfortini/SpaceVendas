@@ -1,5 +1,6 @@
 package br.com.spaceinformatica.spacevendas
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
@@ -13,7 +14,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import br.com.spaceinformatica.spacevendas.adapter.MenuAdapter
 import br.com.spaceinformatica.spacevendas.databinding.ActivityMenuBinding
+import br.com.spaceinformatica.spacevendas.model.ItemMenu
 import br.com.spaceinformatica.spacevendas.utils.COLABORADOR
 
 class MenuActivity : AppCompatActivity() {
@@ -38,10 +43,61 @@ class MenuActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        createMenu()
+
+        val navHeader = navView.getHeaderView(0)
+        val textUser = navHeader.findViewById<TextView>(R.id.desc_user_menu)
+        textUser.setText("Bem vindo, $COLABORADOR")
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_menu)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    fun createMenu(){
+
+        val itensMenu = mutableListOf<ItemMenu>()
+
+        itensMenu.add(
+            ItemMenu(1,
+            R.drawable.ic_baseline_people,
+            R.string.client)
+        )
+
+        itensMenu.add(
+            ItemMenu(2,
+                R.drawable.ic_baseline_ballot,
+                R.string.product)
+        )
+
+        itensMenu.add(
+            ItemMenu(3,
+                R.drawable.ic_baseline_shopping_cart,
+                R.string.pedidos)
+        )
+        itensMenu.add(
+            ItemMenu(4,
+                R.drawable.ic_baseline_help_center,
+                R.string.help)
+        )
+
+        val adapter = MenuAdapter(this, itensMenu) {id ->
+            when(id){
+                1 -> startActivity(Intent(this, ClienteActivity::class.java))
+                2 -> startActivity(Intent(this, ProdutoActivity::class.java))
+                3 -> Toast.makeText(this, "Aqui deve abrir a lista de pedidos", Toast.LENGTH_SHORT).show()
+                4 -> Toast.makeText(this, "Aqui deve abrir o manual de uso do app", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val rv = findViewById<RecyclerView>(R.id.rv_menu_home)
+        rv.adapter = adapter
+        rv.layoutManager = GridLayoutManager(this, 2)
+
+
+    }
+
+
 }
