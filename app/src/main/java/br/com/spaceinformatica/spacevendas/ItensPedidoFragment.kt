@@ -1,7 +1,6 @@
 package br.com.spaceinformatica.spacevendas
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -62,16 +61,16 @@ class ItensPedidoFragment : Fragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle("O que deseja fazer?")
-                .setItems(R.array.arrays_item_options,
-                    DialogInterface.OnClickListener { dialog, which ->
-                        if (which == 0) {
-                            val dialog = ItemPedidoDialog(id)
-                            dialog.show(childFragmentManager, dialog.tag)
+                .setItems(R.array.arrays_item_options
+                ) { dialog, which ->
+                    if (which == 0) {
+                        val dialog = ItemPedidoDialog(id)
+                        dialog.show(childFragmentManager, dialog.tag)
 
-                        } else if (which == 1) {
-                            deletarItem(id)
-                        }
-                    })
+                    } else if (which == 1) {
+                        deletarItem(id)
+                    }
+                }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

@@ -7,15 +7,8 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.spaceinformatica.spacevendas.adapter.ClienteAdapter
@@ -24,7 +17,6 @@ import br.com.spaceinformatica.spacevendas.api.HTTPClient
 import br.com.spaceinformatica.spacevendas.model.ClienteModel
 import br.com.spaceinformatica.spacevendas.model.ItensPedido
 import br.com.spaceinformatica.spacevendas.utils.*
-import com.google.android.material.navigation.NavigationView
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -40,8 +32,6 @@ class ClienteActivity : AppCompatActivity() {
     private lateinit var clienteList: List<ClienteModel>
     private lateinit var clienteAdapter: ClienteAdapter
     private lateinit var searchCliente: EditText
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,9 +152,9 @@ class ClienteActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val newListClient = mutableListOf<ClienteModel>()
                 listCliente.forEach {
-                    if (it.fantasiaCliente.contains(s.toString().uppercase()!!)
-                        || it.razaoCliente.contains(s.toString().uppercase()!!)
-                        || it.codigoCliente.toString().contains(s.toString().uppercase()!!)
+                    if (it.fantasiaCliente.contains(s.toString().uppercase())
+                        || it.razaoCliente.contains(s.toString().uppercase())
+                        || it.codigoCliente.toString().contains(s.toString().uppercase())
                     ){
                     newListClient.add(it)
                 }

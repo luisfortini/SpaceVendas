@@ -5,20 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.View.inflate
 import android.widget.*
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.spaceinformatica.spacevendas.adapter.ProdutoAdapter
 import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
-import br.com.spaceinformatica.spacevendas.model.ClienteModel
 import br.com.spaceinformatica.spacevendas.model.ProdutoModel
 import br.com.spaceinformatica.spacevendas.utils.FILIAL
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
@@ -26,7 +21,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
+
 
 class ProdutoActivity : AppCompatActivity() {
 
@@ -63,7 +58,7 @@ class ProdutoActivity : AppCompatActivity() {
                 ) {
                     progressBar.visibility = View.GONE
                     if (response.isSuccessful) {
-                        val data = JSONObject(response.body()?.string())
+                        val data = JSONObject(response.body()?.string()!!)
                         if (data.getBoolean("resposta")) {
                             val produtoArray = data.getJSONArray("dados")
                             val produtoList = GsonBuilder()
@@ -114,9 +109,9 @@ class ProdutoActivity : AppCompatActivity() {
                 val newListProduto = mutableListOf<ProdutoModel>()
 
                 listProduto.forEach {
-                    if(it.descProduto.contains(s.toString().uppercase()!!)
+                    if(it.descProduto.contains(s.toString().uppercase())
                         ||it.codigoProduto.toString().contains(s!!)
-                        ||it.codBarras.contains(s!!)){
+                        ||it.codBarras.contains(s)){
                         newListProduto.add(it)
                     }
 

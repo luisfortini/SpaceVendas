@@ -65,7 +65,7 @@ class ItemPedidoDialog(val numItem: Int) : DialogFragment() {
 
     }
 
-    fun saveItemPedidoChange() {
+    private fun saveItemPedidoChange() {
 
         val qtde = inputQtde.text.toString().toDouble()
         val precoVenda = inputPreco.text.toString().toDouble()

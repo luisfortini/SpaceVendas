@@ -1,6 +1,5 @@
 package br.com.spaceinformatica.spacevendas
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -49,7 +48,7 @@ class DadosPedidoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = view?.findViewById(R.id.progress_dados_pedido_frag)!!
+        progressBar = view.findViewById(R.id.progress_dados_pedido_frag)!!
         progressBar.visibility = View.GONE
 
         //Chamada para atualizar a lista de produtos em Utils
@@ -77,7 +76,7 @@ class DadosPedidoFragment : Fragment() {
                     response: Response<ResponseBody>,
                 ) {
                     if (response.isSuccessful) {
-                        val data = JSONObject(response.body()?.string())
+                        val data = JSONObject(response.body()?.string()!!)
                         val natOperArray = data.getJSONArray("dadosNatureza")
                         val condPagtoArray = data.getJSONArray("dadosCondicao")
                         val formaPagtoArray = data.getJSONArray("dadosForma")
@@ -146,11 +145,9 @@ class DadosPedidoFragment : Fragment() {
         spinnerVendedor.adapter = adapter
     }
 
-    fun savePedido() {
-
+    private fun savePedido() {
 
         progressBar.visibility = View.VISIBLE
-
 
         val itemsBody = createItemsBody()
         val pedidoBody = createPedidoBody(itemsBody)
@@ -204,7 +201,7 @@ class DadosPedidoFragment : Fragment() {
 
     }
 
-    fun createItemsBody(): List<ItemBody> {
+    private fun createItemsBody(): List<ItemBody> {
 
         val listItems: MutableList<ItemBody> = mutableListOf()
         ITEMS_PEDIDO.forEach {
@@ -221,7 +218,7 @@ class DadosPedidoFragment : Fragment() {
         return listItems
     }
 
-    fun createPedidoBody(itemsBoby: List<ItemBody>): PedidoBody {
+    private fun createPedidoBody(itemsBoby: List<ItemBody>): PedidoBody {
 
         val spinnerNatOper = view?.findViewById<Spinner>(R.id.spinner_natoper)
         val natOperModel: NatOperModel =
@@ -244,14 +241,14 @@ class DadosPedidoFragment : Fragment() {
 
         val data = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date()).toString()
         val hora = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date()).toString()
-        val pedidoBody = PedidoBody(
+        return PedidoBody(
             CLIENTE_ATIVO?.codigoCliente!!,
             condPagtoModel.codigoCondicao,
             data,
             formaPagtoModel.codigoFormaPagto,
             hora,
             natOperModel.codigoNatureza,
-            "${vendedorModel.codigoVendedor}${data.replace("/", "")}${hora.replace(":","")} ",
+            "${vendedorModel.codigoVendedor}${data.replace("/", "")}${hora.replace(":", "")} ",
             observacao,
             "",
             "",
@@ -263,7 +260,6 @@ class DadosPedidoFragment : Fragment() {
             vendedorModel.codigoVendedor,
             itemsBoby
         )
-        return pedidoBody
     }
 
     fun resetPedido(){

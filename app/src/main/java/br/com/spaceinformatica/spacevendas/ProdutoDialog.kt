@@ -1,11 +1,8 @@
 package br.com.spaceinformatica.spacevendas
 
-
-import android.appwidget.AppWidgetProvider
 import android.os.Bundle
 import android.view.*
 import android.widget.*
-import android.widget.AdapterView.*
 import androidx.fragment.app.DialogFragment
 import br.com.spaceinformatica.spacevendas.api.EndPoint
 import br.com.spaceinformatica.spacevendas.api.HTTPClient
@@ -22,7 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ProdutoDialog(val produtoCodigo: Int) : DialogFragment() {
+class ProdutoDialog(private val produtoCodigo: Int) : DialogFragment() {
 
     private lateinit var textDesc: TextView
     private lateinit var textEstoque: TextView
