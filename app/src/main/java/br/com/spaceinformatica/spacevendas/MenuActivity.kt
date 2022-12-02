@@ -2,10 +2,8 @@ package br.com.spaceinformatica.spacevendas
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -47,7 +45,7 @@ class MenuActivity : AppCompatActivity() {
 
         val navHeader = navView.getHeaderView(0)
         val textUser = navHeader.findViewById<TextView>(R.id.desc_user_menu)
-        textUser.setText("Bem vindo, $COLABORADOR")
+        textUser.text = "Bem vindo, $COLABORADOR"
 
     }
 
@@ -56,7 +54,7 @@ class MenuActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun createMenu(){
+    private fun createMenu(){
 
         val itensMenu = mutableListOf<ItemMenu>()
 
